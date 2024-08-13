@@ -1,8 +1,8 @@
-type NoteInputArgs = {
+type NoteArgs = {
   note: {
     title: string;
     body: string;
   };
 };
 
-export default NoteInputArgs;
+export default NoteArgs;

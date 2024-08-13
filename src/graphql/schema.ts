@@ -1,4 +1,4 @@
-import { gql } from 'graphql-tag';
+import { gql } from '@apollo/client';
 export const typeDefs = gql`
   type Note {
     id: Int!
@@ -13,11 +13,12 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    addNote(note: AddNoteInput!): Note
+    addNote(note: NoteInput!): Note
     deleteNote(id: Int!): Boolean!
+    updateNote(id: Int!, note: NoteInput!): Note!
   }
 
-  input AddNoteInput {
+  input NoteInput {
     title: String!
     body: String!
   }

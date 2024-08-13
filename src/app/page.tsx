@@ -1,11 +1,12 @@
 'use client';
 
-import NotesCard from '@/components/NotesCard';
-import { Button, GridItem, SimpleGrid, useDisclosure } from '@chakra-ui/react';
+import NotesCard from '@/app/_components/NotesCard';
+import { Center, GridItem, SimpleGrid } from '@chakra-ui/react';
 import { gql, useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
+import AddNoteModal from '@/app/_components/AddNoteModal';
 import Note from '@/types/Note';
-import { useRef } from 'react';
-import AddNoteModal from '@/components/AddNoteModal';
+import Loading from '@/components/Loading';
 
 const AllNotesQuery = gql`
   query {
@@ -19,26 +20,33 @@ const AllNotesQuery = gql`
 `;
 
 export default function Home() {
-  const { data, error, loading } = useQuery(AllNotesQuery);
-  const { onOpen, isOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const { error, loading } = useQuery(AllNotesQuery, {
+    onCompleted: (data) => {
+      setNotes(() => data.notes);
+    },
+    fetchPolicy: 'no-cache',
+  });
+  
+  // Penggunaan useEffect untuk mengatur ulang state ketika data berubah
+  useEffect(() => {}, [notes]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
-
+  if (loading) return <Loading />
+  if (error) return <Center>Error : {error.message}</Center>;
   return (
     <>
-      <AddNoteModal initialRef={initialRef} isOpen={isOpen} onClose={onClose} />
-      <Button colorScheme='darkBlue' variant='outline' position={'absolute'} right={7} top={6} onClick={onOpen}>
-        +
-      </Button>
-      <SimpleGrid columns={2} gap={6} paddingX={4}>
-        {data?.notes.map((note: Note) => (
-          <GridItem key={note.id}>
-            <NotesCard id={note.id} />
-          </GridItem>
-        ))}
-      </SimpleGrid>
+      <AddNoteModal setNotes={setNotes} />
+      {notes.length ? (
+        <SimpleGrid columns={2} gap={6}>
+          {notes.map((note: Note) => (
+            <GridItem key={note.id}>
+              <NotesCard id={note.id} title={note.title} body={note.body} createdAt={note.createdAt} />
+            </GridItem>
+          ))}
+        </SimpleGrid>
+      ) : (
+        <Center>No Notes</Center>
+      )}
     </>
   );
 }
