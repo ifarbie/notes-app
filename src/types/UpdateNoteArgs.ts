@@ -1,7 +1,7 @@
 import NoteArgs from "./NoteArgs";
 
 type UpdateNoteArgs = {
-    id: number,
+    id: string,
 } & NoteArgs;
 
 export default UpdateNoteArgs;

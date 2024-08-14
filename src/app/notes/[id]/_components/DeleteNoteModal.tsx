@@ -4,14 +4,14 @@ import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 
 const deleteNoteQueryById = gql`
-  mutation DeleteNoteMutation($id: Int!) {
+  mutation DeleteNoteMutation($id: String!) {
     deleteNote(id: $id)
   }
 `;
 
-export default function DeleteNoteModal({ id }: { id: number }) {
+export default function DeleteNoteModal({ id }: { id: string }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [deleteNote, { loading, error }] = useMutation(deleteNoteQueryById);
+  const [deleteNote, { loading }] = useMutation(deleteNoteQueryById);
   const router = useRouter();
 
   const handleDeleteNote = async () => {

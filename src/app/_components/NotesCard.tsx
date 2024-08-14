@@ -3,7 +3,7 @@ import { Link } from '@chakra-ui/next-js';
 import { Card, CardBody, CardHeader, Heading, Text } from '@chakra-ui/react';
 
 type Props = {
-  id: number;
+  id: string;
   title: string;
   createdAt: string;
   body: string;
