@@ -10,7 +10,7 @@ type Props = {
 
 type AddNoteMutationResult = {
   addNote: {
-    id: number;
+    id: string;
     title: string;
     createdAt: string;
     body: string;
@@ -35,7 +35,7 @@ const AddNoteQuery = gql`
 
 export default function AddNoteModal({ setNotes }: Props) {
   const [formField, setFormField] = useState<FormField>({ title: '', body: '' });
-  const [addNote, { loading, error }] = useMutation<AddNoteMutationResult>(AddNoteQuery);
+  const [addNote, { loading }] = useMutation<AddNoteMutationResult>(AddNoteQuery);
   const { onOpen, isOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
 

@@ -15,9 +15,9 @@ type Props = {
   };
 };
 
-const noteByIdQuery = (id: number) => gql`
-  query {
-    note(id: ${id}) {
+const noteByIdQuery = gql`
+  query GetNoteById($id: String!) {
+    note(id: $id) {
       id
       title
       body
@@ -27,20 +27,23 @@ const noteByIdQuery = (id: number) => gql`
 `;
 
 export default function NoteDetailPage({ params }: Props) {
-  const [note, setNote] = useState<Note>({ id: 0, title: '', body: '', createdAt: '' });
+  const [note, setNote] = useState<Note>({ id: '', title: '', body: '', createdAt: '' });
   const { id } = params;
-  const { error, loading } = useQuery(noteByIdQuery(Number(id)), {
+  const { error, loading } = useQuery(noteByIdQuery, {
     onCompleted: (data) => {
       setNote(() => data.note);
+    },
+    variables: {
+      id,
     },
   });
 
   if (loading) return <Loading />;
-  if (error) return <Center>Note not Found</Center>
+  if (error) return <Center>Note not Found</Center>;
   return (
     <>
-      <DeleteNoteModal id={Number(id)} />
-      <EditNoteModal id={Number(id)} setNote={setNote} note={note} />
+      <DeleteNoteModal id={id} />
+      <EditNoteModal id={id} setNote={setNote} note={note} />
 
       <Box paddingInline={6}>
         <Text>{formatDate(Number(note.createdAt))}</Text>

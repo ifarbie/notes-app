@@ -1,5 +1,5 @@
 type Note = {
-    id: number;
+    id: string;
     title: string;
     body: string;
     createdAt: string;

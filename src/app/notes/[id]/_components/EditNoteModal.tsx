@@ -5,7 +5,7 @@ import { EditIcon } from '@chakra-ui/icons';
 import Note from '@/types/Note';
 
 type Props = {
-  id: number;
+  id: string;
   note: Note;
   setNote: Dispatch<SetStateAction<Note>>;
 };
@@ -16,7 +16,7 @@ type FormField = {
 };
 
 const updateNoteQuery = gql`
-  mutation UpdateNoteMutation($id: Int!, $note: NoteInput!) {
+  mutation UpdateNoteMutation($id: String!, $note: NoteInput!) {
     updateNote(id: $id, note: $note) {
       id
       title

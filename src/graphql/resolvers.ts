@@ -1,19 +1,20 @@
 import NoteArgs from '@/types/NoteArgs';
 import prisma from '@/lib/prisma';
 import UpdateNoteArgs from '@/types/UpdateNoteArgs';
+import { nanoid } from 'nanoid';
 
 export const resolvers = {
   Query: {
     notes: async () => await prisma.note.findMany({
       orderBy: {
-        id: 'asc',
+        createdAt: 'asc',
       },
     }),
-    note: async (_: unknown, args: { id: number }) => await prisma.note.findUnique({ where: { id: args.id } }),
+    note: async (_: unknown, args: { id: string }) => await prisma.note.findUnique({ where: { id: args.id } }),
   },
 
   Mutation: {
-    deleteNote: async (_: unknown, args: { id: number }) => {
+    deleteNote: async (_: unknown, args: { id: string }) => {
       try {
         await prisma.note.delete({ where: { id: args.id } });
         return true;
@@ -22,7 +23,9 @@ export const resolvers = {
       }
     },
     addNote: async (_: unknown, args: NoteArgs) => {
+      const id = `note-${nanoid(16)}`
       const data = {
+        id,
         ...args.note,
         createdAt: new Date().toISOString(),
       };

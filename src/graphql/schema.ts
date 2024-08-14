@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 export const typeDefs = gql`
   type Note {
-    id: Int!
+    id: String!
     title: String!
     body: String!
     createdAt: String!
@@ -9,13 +9,13 @@ export const typeDefs = gql`
 
   type Query {
     notes: [Note!]!
-    note(id: Int!): Note!
+    note(id: String!): Note!
   }
 
   type Mutation {
     addNote(note: NoteInput!): Note
-    deleteNote(id: Int!): Boolean!
-    updateNote(id: Int!, note: NoteInput!): Note!
+    deleteNote(id: String!): Boolean!
+    updateNote(id: String!, note: NoteInput!): Note!
   }
 
   input NoteInput {
