@@ -44,7 +44,7 @@ export default function NoteDetailPage({ params }: Props) {
     <>
       <DeleteNoteModal id={id} />
       <EditNoteModal id={id} setNote={setNote} note={note} />
-
+      
       <Box paddingInline={6}>
         <Text>{formatDate(Number(note.createdAt))}</Text>
         <Heading as='h4'>{note.title}</Heading>

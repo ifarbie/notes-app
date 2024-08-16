@@ -25,7 +25,7 @@ export default function Home() {
     onCompleted: (data) => {
       setNotes(() => data.notes);
     },
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'cache-and-network',
   });
   
   // Penggunaan useEffect untuk mengatur ulang state ketika data berubah
